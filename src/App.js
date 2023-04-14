@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import ColorsList from "./ColorsList";
+import Color from "./Color";
+import NewColorForm from "./NewColorForm";
+import ColorDetails from "./ColorDetails";
 
 function App() {
+  const [colors, setColors] = useState(['blue', 'red', 'green']);
+
+  const addColor = (color) => {
+    setColors([color, ...colors]);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/colors">
+            <ColorList colors={colors} />
+          </Route>
+          <Route path="/colors/new">
+            <NewColorForm addColor={addColor} />
+          </Route>
+          <Route path="/colors/:color">
+            <ColorDetails colors={colors} />
+          </Route>
+          <Redirect to="/colors" />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
